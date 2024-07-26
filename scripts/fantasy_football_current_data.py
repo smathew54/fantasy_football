@@ -10,9 +10,9 @@ import pandas as pd
 import numpy as np
 
 #bring in the dataframes from the excel
-receiving = pd.read_csv("Quartback_receiving.csv")
-rushing = pd.read_csv('Quartback_Running_data.csv')
-passing = pd.read_csv('Quartback_data.csv')
+receiving = pd.read_csv("../data/Quartback_receiving.csv")
+rushing = pd.read_csv('../data/Quartback_Running_data.csv')
+passing = pd.read_csv('../data/Quartback_data.csv')
 
 #do some adjusting to each of the dataframes
 passing = passing.drop(['Rk'], axis = 1)
