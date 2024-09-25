@@ -7,6 +7,7 @@ import pandas as pd
 import logging
 import certifi
 from sqlalchemy import create_engine, Column, Integer, String, Sequence
+import openpyxl
 
 
 # here is the code
@@ -15,6 +16,9 @@ from sqlalchemy import create_engine, Column, Integer, String, Sequence
 
 # set the webpage available
 # takes in the data from the webpage and returns it as a df
+
+
+#need to be able to set a global variable in one place and have that be taken by the webscrapper and the
 
 def web_scrapper(year):
     year = str(year)
@@ -38,14 +42,30 @@ def web_scrapper(year):
     stats.Player = stats.Player.astype(str)
     stats.Player = stats.Player.str.strip("*+")
 #    team_selector(stats)
+    column_cleanser(stats)
     return stats
 
 
+def column_cleanser(df):
+    column_names = ["player", "team", "fantpos", "age", "games", "games_started", "completions", "passing_att",
+                    "passing_yards", "passing_td", "int", "rushing_att", "rushing_yrds", "yars_per_attempt",
+                    "rushing_td", "targets", "receptions", "yards_receiving", "yards_per_reception", "receiving_td", "fumble", "fumble_lost",
+                    "misc_td", "two_pm", "two_pp", "fant_points", "ppr", "dkpt", "fdpt", "vbd", "position_rank", "overall_rank"]
+    #print(df.columns.values[0])
+    for column, index in enumerate(df.columns):
+        print(f"Position: {index}, Column Name: {column}")
+    df.columns = column_names
+    print(df)
+
+
+
+
 def write_to_database(stats, year):
+    #schema issue is preventing write because of column names are duplicated. Need to cleanse column names
     print(stats)
-    stats.to_csv('stats_file.csv')
+    stats.to_excel(f'stats_file_{year}.xlsx')
     engine = create_engine('sqlite:////Users/Shawn/application/stats.db')
-    table_name = 'fantasy_football_stats_{}'.format(year)
+    table_name = f'fantasy_football_stats_{year}'
     stats.to_sql(table_name, con=engine, if_exists='replace', index=False)
 
 
@@ -87,4 +107,5 @@ def team_selector(stats):
 
 if __name__ == "__main__":
     stats = web_scrapper(2023)
+    column_cleanser(stats)
     write_to_database(stats, 2023)
