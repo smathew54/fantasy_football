@@ -47,11 +47,20 @@ def web_scrapper(year):
 
 
 def column_cleanser(df):
-    column_names = ["player", "team", "fantpos", "age", "games", "games_started", "completions", "passing_att",
-                    "passing_yards", "passing_td", "int", "rushing_att", "rushing_yrds", "yars_per_attempt",
-                    "rushing_td", "targets", "receptions", "yards_receiving", "yards_per_reception", "receiving_td", "fumble", "fumble_lost",
-                    "misc_td", "two_pm", "two_pp", "fant_points", "ppr", "dkpt", "fdpt", "vbd", "position_rank", "overall_rank"]
+    column_names = ["player", "team", "fantpos",
+                    "age", "games", "games_started",
+                    "completions", "passing_att", "passing_yards", "passing_td", "int",
+                    "rushing_att", "rushing_yrds", "yars_per_attempt",  "rushing_td",
+                    "targets", "receptions", "yards_receiving", "yards_per_reception", "receiving_td",
+                    "fumble", "fumble_lost",
+                    "misc_td", "two_pm", "two_pp",
+                    "fant_points", "ppr", "dkpt", "fdpt", "vbd", "position_rank", "overall_rank"]
     #print(df.columns.values[0])
+    column_names_len = len(column_names)
+    print(f"the length of the replacement columns is {column_names_len}")
+    print(len(df.columns))
+
+    logging.debug("entering the enumerate")
     for column, index in enumerate(df.columns):
         print(f"Position: {index}, Column Name: {column}")
     df.columns = column_names
@@ -106,6 +115,6 @@ def team_selector(stats):
 
 
 if __name__ == "__main__":
-    stats = web_scrapper(2023)
+    stats = web_scrapper(2024)
     column_cleanser(stats)
-    write_to_database(stats, 2023)
+    write_to_database(stats, 2024)
